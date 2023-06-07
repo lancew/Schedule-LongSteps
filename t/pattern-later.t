@@ -5,47 +5,54 @@ use DateTime;
 use Schedule::LongSteps;
 
 {
+
     package MyProcess;
     use Moose;
     extends qw/Schedule::LongSteps::Process/;
 
     use DateTime;
-    sub build_first_step{
+
+    sub build_first_step {
         my ($self) = @_;
-        return $self->new_step({ what => 'do_stuff1', run_at => DateTime->now() });
+        return $self->new_step(
+            { what => 'do_stuff1', run_at => DateTime->now() } );
     }
 
-    sub do_stuff1{
+    sub do_stuff1 {
         my ($self) = @_;
-        return $self->new_step({ what => 'do_end', run_at => DateTime->now()->add( days => 2 ) });
+        return $self->new_step(
+            { what => 'do_end', run_at => DateTime->now()->add( days => 2 ) }
+        );
     }
 
-    sub do_end{
+    sub do_end {
         my ($self) = @_;
-        return $self->final_step({ state => { final => 'state' }});
+        return $self->final_step( { state => { final => 'state' } } );
     }
 }
 
-
 ok( my $long_steps = Schedule::LongSteps->new() );
 
-ok( my $process = $long_steps->instantiate_process('MyProcess', undef, { beef => 'saussage' }) );
+ok( my $process = $long_steps->instantiate_process(
+        'MyProcess', undef, { beef => 'saussage' }
+    )
+);
 
 # Time to run!
 ok( $long_steps->run_due_processes() );
 
-is( $process->what() , 'do_end' );
+is( $process->what(), 'do_end' );
 
 # Nothing to run right now
-ok( ! $long_steps->run_due_processes() );
+ok( !$long_steps->run_due_processes() );
 
 # Simulate 3 days after now.
 my $three_days = DateTime->now()->add( days => 3 );
 
-on $three_days.'' => sub{
-    ok( $long_steps->run_due_processes() , "Ok one step was run");
+on $three_days. '' => sub {
+    ok( $long_steps->run_due_processes(), "Ok one step was run" );
 };
 
-is( $process->state() , { final => 'state' });
+is( $process->state(), { final => 'state' } );
 
 done_testing();

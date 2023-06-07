@@ -26,7 +26,8 @@ my $do_break_stuff_fails = 1;
 
     sub do_final_step {
         my ($self) = @_;
-        return $self->final_step( { state => { the => 'final', state => 1 } } );
+        return $self->final_step(
+            { state => { the => 'final', state => 1 } } );
     }
 }
 
@@ -35,14 +36,13 @@ my $required_context = { required_att => 'saussage' };
 
 ok( my $long_steps = Schedule::LongSteps->new() );
 
-ok(
-    my $process = $long_steps->instantiate_process(
+ok( my $process = $long_steps->instantiate_process(
         'MyProcess', $required_context, { beef => 'saussage' }
     )
 );
 ok( $process->id() );
 
-is( $process->what(), 'do_break_stuff' );
+is( $process->what(),  'do_break_stuff' );
 is( $process->state(), { beef => 'saussage' } );
 
 # Time to run!
@@ -60,7 +60,11 @@ like(
 );
 
 # the process was not revived, so the error and state are stil the same
-like( $process->error(), qr(something went wrong), 'something is still wrong' );
+like(
+    $process->error(),
+    qr(something went wrong),
+    'something is still wrong'
+);
 is( $process->status(), 'terminated', 'process status is terminated' );
 
 # now revive with a context
@@ -70,11 +74,12 @@ ok( $long_steps->revive( $process->id(), $required_context ) );
 is( $process->error(),  undef,    'error has been reset' );
 is( $process->status(), 'paused', 'process status is paused' );
 
-ok( $long_steps->run_due_processes($required_context), 'run the revived step' );
+ok( $long_steps->run_due_processes($required_context),
+    'run the revived step' );
 
 # And check the step properties have been
 ok( $long_steps->run_due_processes($required_context), 'run the final step' );
-is( $process->state(), { the => 'final', state => 1 } );
+is( $process->state(),  { the => 'final', state => 1 } );
 is( $process->status(), 'terminated' );
 is( $process->run_at(), undef );
 
