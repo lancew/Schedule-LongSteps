@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Schedule::LongSteps;
 
 my $do_break_stuff_fails = 1;
@@ -45,7 +43,7 @@ ok(
 ok( $process->id() );
 
 is( $process->what(), 'do_break_stuff' );
-is_deeply( $process->state(), { beef => 'saussage' } );
+is( $process->state(), { beef => 'saussage' } );
 
 # Time to run!
 ok( $long_steps->run_due_processes($required_context) );
@@ -76,7 +74,7 @@ ok( $long_steps->run_due_processes($required_context), 'run the revived step' );
 
 # And check the step properties have been
 ok( $long_steps->run_due_processes($required_context), 'run the final step' );
-is_deeply( $process->state(), { the => 'final', state => 1 } );
+is( $process->state(), { the => 'final', state => 1 } );
 is( $process->status(), 'terminated' );
 is( $process->run_at(), undef );
 

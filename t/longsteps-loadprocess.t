@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Schedule::LongSteps;
 
 {
@@ -53,7 +51,7 @@ ok(
 # the process looks normal
 ok( $process->id() );
 is( $process->what(), 'do_stuff1' );
-is_deeply( $process->state(), { beef => 'saussage' } );
+is( $process->state(), { beef => 'saussage' } );
 
 
 # load the process by using its id.
@@ -64,7 +62,7 @@ ok( my $loaded_process = $long_steps->load_process( $process->id() ),
 my $stored_process = $loaded_process->stored_process;
 is( $process->id(),   $stored_process->id(),   'same process: id' );
 is( $process->what(), $stored_process->what(), 'same process: what' );
-is_deeply(
+is(
     $process->state(),
     $stored_process->state(),
     'same process: state'
@@ -85,13 +83,13 @@ like($@, qr(I died), 'do_death dies');
 ok( $long_steps->run_due_processes() );
 
 # running do_stuff manually and as part of a process return the same state.
-is_deeply($process->state, $did_do_stuff->{state});
+is($process->state, $did_do_stuff->{state});
 
 # now run to complete
 ok( $long_steps->run_due_processes() );
 
 # And check the step properties have been
-is_deeply( $process->state(), { the => 'final', state => 1 } );
+is( $process->state(), { the => 'final', state => 1 } );
 is( $process->status(), 'terminated' );
 is( $process->run_at(), undef );
 

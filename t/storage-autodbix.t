@@ -1,10 +1,4 @@
-#! perl -wt
-
-use strict;
-use warnings;
-
-use Test::More;
-
+use Test2::V0;
 use DateTime;
 
 eval "use DBD::SQLite";

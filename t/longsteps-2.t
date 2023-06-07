@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Schedule::LongSteps;
 
 {
@@ -37,7 +35,7 @@ ok( my $fakestep = $long_steps->instantiate_process('MyProcess', undef, { beef =
 $fakestep->update({ process_class => 'BladiBlabla' });
 
 is( $step->what() , 'do_stuff1' );
-is_deeply( $step->state() , { beef => 'saussage' });
+is( $step->state() , { beef => 'saussage' });
 
 # Time to run!
 ok( $long_steps->run_due_processes() );
@@ -53,19 +51,19 @@ like( $fakestep->error() , qr/locate BladiBlabla\.pm/ );
     my $stored_process = $loaded_process->stored_process;
     is( $step->id(),   $stored_process->id(),   'same process: id' );
     is( $step->what(), $stored_process->what(), 'same process: what' );
-    is_deeply( $step->state(), $stored_process->state(), 'same process: state' );
+    is( $step->state(), $stored_process->state(), 'same process: state' );
 }
 
 
 # And check the step properties have been
-is_deeply( $step->state(), { some => 'new one' });
+is( $step->state(), { some => 'new one' });
 is( $step->what(), 'do_last_stuff' );
 is( $step->status() , 'paused' );
 ok( $step->run_at() );
 
 ok( $long_steps->run_due_processes() , "Will run one step");
 
-is_deeply( $step->state(), { the => 'final one' });
+is( $step->state(), { the => 'final one' });
 is( $step->status() , 'terminated' );
 ok( ! $step->run_at() );
 

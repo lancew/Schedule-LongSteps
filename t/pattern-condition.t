@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Test::MockDateTime;
 use DateTime;
 
@@ -48,7 +46,7 @@ ok( my $long_steps = Schedule::LongSteps->new() );
 
     ok( $long_steps->run_due_processes() );
 
-    is_deeply( $process->state() , { done => 'choice1' });
+    is( $process->state() , { done => 'choice1' });
 }
 
 {
@@ -60,7 +58,7 @@ ok( my $long_steps = Schedule::LongSteps->new() );
 
     ok( $long_steps->run_due_processes() );
 
-    is_deeply( $process->state() , { done => 'choice2' });
+    is( $process->state() , { done => 'choice2' });
 }
 
 done_testing();

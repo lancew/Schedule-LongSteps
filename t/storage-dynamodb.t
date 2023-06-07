@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 
 use DateTime;
 use Class::Load;
@@ -53,11 +51,11 @@ my $now = DateTime->now();
 {
     ok( my $process_id =  $storage->create_process({ process_class => 'Blabla', what => 'whatever', run_at => $now })->id(), "Ok got ID");
     ok( my $process = $storage->find_process($process_id) );
-    is_deeply( $process->state() , {} );
+    is( $process->state() , {} );
     ok( $process = $process->update({ state => { 'foo' => 'updated' } } ) );
     $process = $storage->find_process($process_id);
     is( $process->run_at().'' , $now.'' );
-    is_deeply( $process->state() , { 'foo' => 'updated' });
+    is( $process->state() , { 'foo' => 'updated' });
 }
 
 {
@@ -66,14 +64,14 @@ my $now = DateTime->now();
     $process->update({ error => 'blabla' });
     $process = $storage->find_process( $process_id );
     is( $process->error() , 'blabla' );
-    is_deeply( $process->state() , { foo => 'bar' } );
+    is( $process->state() , { foo => 'bar' } );
     is( $process->run_at() , undef );
 }
 
 {
     ok( my $process_id =  $storage->create_process({ process_class => 'Blabla', what => 'whatever', run_at => $now, state => { foo => 'bar' x 300_000 } })->id(), "Ok got ID");
     ok( my $process = $storage->find_process($process_id) );
-    is_deeply( $process->state() , { foo => 'bar' x 300_000 } );
+    is( $process->state() , { foo => 'bar' x 300_000 } );
 }
 
 is( scalar( $storage->prepare_due_processes() ) , 2 );

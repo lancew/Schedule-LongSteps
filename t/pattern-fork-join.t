@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Test::MockDateTime;
 use DateTime;
 
@@ -85,7 +83,7 @@ ok( my $process = $long_steps->instantiate_process('MyProcess', undef, {}) );
     ok( $long_steps->run_due_processes() );
 
     is( $process->what() , 'do_join' );
-    is_deeply( $process->state() , { processes => [ 2 , 3 ] });
+    is( $process->state() , { processes => [ 2 , 3 ] });
 }
 
 
@@ -105,7 +103,7 @@ ok( my $process = $long_steps->instantiate_process('MyProcess', undef, {}) );
     is( $process->what() , 'do_join' );
     is( $process->status() , 'terminated' );
     is( $process->error() , undef );
-    is_deeply($process->state() , { done => 'joined' , pstates => [ { from => 'another' } , { from => 'yetanother' }] });
+    is($process->state() , { done => 'joined' , pstates => [ { from => 'another' } , { from => 'yetanother' }] });
 }
 
 done_testing();

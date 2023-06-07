@@ -1,12 +1,10 @@
-#! perl -wt
-
 use strict;
 use warnings;
 
 use Log::Any::Test;
 use Log::Any qw/$log/;
 
-use Test::More;
+use Test2::V0;
 use Test::MockDateTime;
 use DateTime;
 
@@ -66,7 +64,7 @@ use Schedule::LongSteps;
     ok( $long_steps->run_due_processes() );
     ok( $reached );
     ok( $never_reached );
-    is_deeply( $log->msgs()->[-1],{
+    is( $log->msgs()->[-1],{
         level => 'critical',
         message => "Error handler triggered an error: ERROR HANDLER FAILURE\n",
         category => 'Schedule::LongSteps'

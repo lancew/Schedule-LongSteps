@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 
 use Schedule::LongSteps::Storage::Memory;
 use DateTime;

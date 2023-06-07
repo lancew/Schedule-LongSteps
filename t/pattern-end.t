@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Schedule::LongSteps;
 
 {
@@ -29,7 +27,7 @@ ok( my $process = $long_steps->instantiate_process('MyProcess', undef, { beef =>
 ok( $long_steps->run_due_processes() );
 
 # And check the step properties have been
-is_deeply( $process->state(), { the => 'final', state => 1 });
+is( $process->state(), { the => 'final', state => 1 });
 is( $process->status() , 'terminated' );
 is( $process->run_at() , undef );
 

@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Schedule::LongSteps;
 
 {
@@ -27,7 +25,7 @@ ok( my $process = $long_steps->instantiate_process('MyProcess', undef, { beef =>
 ok( $process->id() );
 
 is( $process->what() , 'do_stuff1' );
-is_deeply( $process->state() , { beef => 'saussage' });
+is( $process->state() , { beef => 'saussage' });
 
 {
     ok( my $loaded_process = $long_steps->load_process( $process->id() ),
@@ -35,14 +33,14 @@ is_deeply( $process->state() , { beef => 'saussage' });
     my $stored_process = $loaded_process->stored_process;
     is( $process->id(),   $stored_process->id(),   'same process: id' );
     is( $process->what(), $stored_process->what(), 'same process: what' );
-    is_deeply( $process->state(), $stored_process->state(), 'same process: state' );
+    is( $process->state(), $stored_process->state(), 'same process: state' );
 }
 
 # Time to run!
 ok( $long_steps->run_due_processes() );
 
 # And check the step properties have been
-is_deeply( $process->state(), { the => 'final', state => 1 });
+is( $process->state(), { the => 'final', state => 1 });
 is( $process->status() , 'terminated' );
 is( $process->run_at() , undef );
 
@@ -52,7 +50,7 @@ is( $process->run_at() , undef );
     my $stored_process = $loaded_process->stored_process;
     is( $process->id(),   $stored_process->id(),   'same process: id' );
     is( $process->what(), $stored_process->what(), 'same process: what' );
-    is_deeply( $process->state(), $stored_process->state(), 'same process: state' );
+    is( $process->state(), $stored_process->state(), 'same process: state' );
 }
 # Check no due step have run again
 ok( ! $long_steps->run_due_processes() );

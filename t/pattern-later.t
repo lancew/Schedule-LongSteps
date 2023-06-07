@@ -1,6 +1,4 @@
-#! perl -wt
-
-use Test::More;
+use Test2::V0;
 use Test::MockDateTime;
 use DateTime;
 
@@ -48,6 +46,6 @@ on $three_days.'' => sub{
     ok( $long_steps->run_due_processes() , "Ok one step was run");
 };
 
-is_deeply( $process->state() , { final => 'state' });
+is( $process->state() , { final => 'state' });
 
 done_testing();
